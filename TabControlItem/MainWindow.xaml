@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TabControlItem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="400"
+        Title="MainWindow" Height="400" Width="400"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
     <Window.Resources>
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
@@ -101,13 +101,10 @@
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="100" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Button Height="24" />
-            <TabControl x:Name="tabControl" Style="{DynamicResource TabControlStyle}" ItemsSource="{Binding Items}" Grid.Row="1">
+            <TabControl x:Name="tabControl" Style="{DynamicResource TabControlStyle}" ItemsSource="{Binding Items}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Header}" Width="100"/>
@@ -119,8 +116,7 @@
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>
-            <Button Height="24" Grid.Row="2" Click="Button_Click" Content="状態評価"/>
-            <TextBox Grid.Row="3" x:Name="resultTextBox" />
+            <TextBox Grid.Row="1" x:Name="resultTextBox" />
         </Grid>
     </Grid>
 </Window>
