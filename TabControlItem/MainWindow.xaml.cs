@@ -36,15 +36,15 @@ namespace TabControlItem
             scrollviewer.ScrollChanged += Scrollviewer_ScrollChanged;
         }
 
+        private void Scrollviewer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            DetermineVisible("Scrollviewer_DataContextChanged", (ScrollViewer)sender);
+        }
+
         private void Scrollviewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             // サイズが変わって表示されているアイテムの個数が変化した際にもきちんと呼ばれる
             DetermineVisible("Scrollviewer_ScrollChanged", (ScrollViewer)sender);
-        }
-
-        private void Scrollviewer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            DetermineVisible("Scrollviewer_DataContextChanged", (ScrollViewer)sender);
         }
 
         private void DetermineVisible(string reason, ScrollViewer scrollviewer)
