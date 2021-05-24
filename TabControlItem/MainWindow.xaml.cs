@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,22 +33,23 @@ namespace TabControlItem
 
             ScrollViewer scrollviewer = (ScrollViewer)tabControl.Template.FindName("scrollViewer", tabControl);
 
-            DependencyPropertyDescriptor descriptor = DependencyPropertyDescriptor.FromName(nameof(tabControl.ItemsSource), typeof(ItemsControl), typeof(TabControl), true);
-            descriptor.AddValueChanged(tabControl, TabControl_ItemsSourceChanged);
+            //DependencyPropertyDescriptor descriptor = DependencyPropertyDescriptor.FromName(nameof(tabControl.ItemsSource), typeof(ItemsControl), typeof(TabControl), true);
+            //descriptor.AddValueChanged(tabControl, TabControl_ItemsSourceChanged);
 
             scrollviewer.ScrollChanged += Scrollviewer_ScrollChanged;
 
             DetermineVisible("MainWindow_Loaded", scrollviewer);
         }
 
-        private void TabControl_ItemsSourceChanged(object sender, EventArgs e)
-        {
-            DetermineVisible("TabControl_ItemsSourceChanged", (ScrollViewer)((TabControl)sender).Template.FindName("scrollViewer", tabControl));
-        }
+        //private void TabControl_ItemsSourceChanged(object sender, EventArgs e)
+        //{
+        //    DetermineVisible("TabControl_ItemsSourceChanged", (ScrollViewer)((TabControl)sender).Template.FindName("scrollViewer", tabControl));
+        //}
 
         private void Scrollviewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            // サイズが変わって表示されているアイテムの個数が変化した際にもきちんと呼ばれる
+            // サイズが変化して表示されているアイテムの個数が変化した際にもきちんと呼ばれる
+            // ItemsSource(そのものの入替、ObservableCollection における増減)が変化したときもきちんと呼ばれる
             DetermineVisible("Scrollviewer_ScrollChanged", (ScrollViewer)sender);
         }
 
@@ -98,14 +98,7 @@ namespace TabControlItem
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ObservableCollection<ItemViewModel> items = ((MainWindowViewModel)DataContext).Items;
-            Dispatcher.BeginInvoke(new Action(() => 
-            { 
-                ((MainWindowViewModel)DataContext).Items = null;
-            }));
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                ((MainWindowViewModel)DataContext).Items = items;
-            }));
+            items.Add(new ItemViewModel() { Header = "Tab" });
         }
     }
 }
