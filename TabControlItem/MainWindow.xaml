@@ -103,6 +103,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TabControl x:Name="tabControl" Style="{DynamicResource TabControlStyle}" ItemsSource="{Binding Items}">
                 <TabControl.ItemTemplate>
@@ -117,6 +118,7 @@
                 </TabControl.ContentTemplate>
             </TabControl>
             <TextBox Grid.Row="1" x:Name="resultTextBox" />
+            <Button Grid.Row="2" Content="ItemsSourceの変更" Click="Button_Click" />
         </Grid>
     </Grid>
 </Window>

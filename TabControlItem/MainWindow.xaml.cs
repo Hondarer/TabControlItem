@@ -7,6 +7,8 @@
 // テンプレートで状態をバインドする
 
 using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,14 +33,18 @@ namespace TabControlItem
             Loaded -= MainWindow_Loaded;
 
             ScrollViewer scrollviewer = (ScrollViewer)tabControl.Template.FindName("scrollViewer", tabControl);
-            DetermineVisible("MainWindow_Loaded", scrollviewer);
-            scrollviewer.DataContextChanged += Scrollviewer_DataContextChanged;
+
+            DependencyPropertyDescriptor descriptor = DependencyPropertyDescriptor.FromName(nameof(tabControl.ItemsSource), typeof(ItemsControl), typeof(TabControl), true);
+            descriptor.AddValueChanged(tabControl, TabControl_ItemsSourceChanged);
+
             scrollviewer.ScrollChanged += Scrollviewer_ScrollChanged;
+
+            DetermineVisible("MainWindow_Loaded", scrollviewer);
         }
 
-        private void Scrollviewer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void TabControl_ItemsSourceChanged(object sender, EventArgs e)
         {
-            DetermineVisible("Scrollviewer_DataContextChanged", (ScrollViewer)sender);
+            DetermineVisible("TabControl_ItemsSourceChanged", (ScrollViewer)((TabControl)sender).Template.FindName("scrollViewer", tabControl));
         }
 
         private void Scrollviewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -87,6 +93,19 @@ namespace TabControlItem
             }
 
             resultTextBox.Text = sb.ToString();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<ItemViewModel> items = ((MainWindowViewModel)DataContext).Items;
+            Dispatcher.BeginInvoke(new Action(() => 
+            { 
+                ((MainWindowViewModel)DataContext).Items = null;
+            }));
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ((MainWindowViewModel)DataContext).Items = items;
+            }));
         }
     }
 }
